@@ -49,7 +49,7 @@ public class NewContentNotifier implements Runnable {
     }
 
     public void run() {
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(HUB_URL);
         
         try {
@@ -81,13 +81,15 @@ public class NewContentNotifier implements Runnable {
         };
 
         try {
-            byte[] response = httpclient.execute(httpPost, handler);
+            byte[] response = httpClient.execute(httpPost, handler);
 
             if (response != null) {
                 logMessage(Level.INFO, new String(response));
             }
         } catch (IOException ioex) {
             logMessage(Level.SEVERE, ioex.getMessage());
-        }
+        } finally {
+            //httpClient.getConnectionManager().shutdown();
+        }        
     }
 }
